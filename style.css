@@ -1,0 +1,141 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #87CEEB;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  cursor: default;
+}
+
+canvas { display: block; }
+
+#crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  pointer-events: none;
+  z-index: 5;
+}
+#crosshair::before, #crosshair::after {
+  content: "";
+  position: absolute;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+#crosshair::before { left: 9px; top: 0; width: 2px; height: 20px; }
+#crosshair::after { top: 9px; left: 0; width: 20px; height: 2px; }
+
+#hud {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#hotbar {
+  display: flex;
+  gap: 6px;
+  background: rgba(0,0,0,0.35);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.slot {
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #fff;
+  text-shadow: 0 0 3px #000;
+  position: relative;
+}
+
+.slot.selected {
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.9);
+}
+
+.slot .num {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+#menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 30, 20, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+#menu-box {
+  background: #2b2b2b;
+  border: 4px solid #555;
+  padding: 32px 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #eee;
+  max-width: 420px;
+}
+
+#menu-box h1 {
+  color: #7CFC00;
+  text-shadow: 2px 2px #000;
+  margin-bottom: 10px;
+}
+
+#menu-box p {
+  margin-bottom: 20px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+#playBtn {
+  background: #5c8a3a;
+  border: 3px solid #3e6027;
+  color: #fff;
+  font-size: 18px;
+  padding: 12px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#playBtn:hover { background: #6ea346; }
+
+#controls {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.6;
+  border-top: 1px solid #444;
+  padding-top: 12px;
+}
+
+#fps {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  color: #fff;
+  font-size: 12px;
+  text-shadow: 0 0 3px #000;
+  z-index: 5;
+  font-family: monospace;
+}

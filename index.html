@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blockcraft</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="crosshair"></div>
+
+  <div id="hud">
+    <div id="hotbar"></div>
+  </div>
+
+  <div id="menu">
+    <div id="menu-box">
+      <h1>⛏ Blockcraft</h1>
+      <p>A tiny Minecraft-like voxel world, built with Three.js.</p>
+      <button id="playBtn">Click to Play</button>
+      <div id="controls">
+        <b>Controls</b><br>
+        WASD — move &nbsp; | &nbsp; Space — jump &nbsp; | &nbsp; Mouse — look<br>
+        Left click — break block &nbsp; | &nbsp; Right click — place block<br>
+        1-6 — select block type
+      </div>
+    </div>
+  </div>
+
+  <div id="fps">FPS: --</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="world.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
