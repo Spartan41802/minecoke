@@ -2,34 +2,131 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blockcraft</title>
-<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="crosshair"></div>
 
-  <div id="hud">
-    <div id="hotbar"></div>
-  </div>
-
-  <div id="menu">
-    <div id="menu-box">
-      <h1>⛏ Blockcraft</h1>
-      <p>A tiny Minecraft-like voxel world, built with Three.js.</p>
-      <button id="playBtn">Click to Play</button>
-      <div id="controls">
-        <b>Controls</b><br>
-        WASD — move &nbsp; | &nbsp; Space — jump &nbsp; | &nbsp; Mouse — look<br>
-        Left click — break block &nbsp; | &nbsp; Right click — place block<br>
-        1-6 — select block type
+  <!-- ============ TITLE SCREEN ============ -->
+  <div id="title-screen">
+    <canvas id="title-bg"></canvas>
+    <div id="title-overlay">
+      <div id="logo">
+        <span class="logo-main">BLOCKCRAFT</span>
+        <span class="logo-sub">a browser voxel sandbox</span>
       </div>
+      <div id="title-buttons">
+        <button class="mc-button" id="btn-creative">Play Creative</button>
+        <button class="mc-button" id="btn-survival">Play Survival</button>
+        <button class="mc-button" id="btn-howto">How To Play</button>
+      </div>
+      <div id="title-footer">Blockcraft is a fan-made, non-commercial homage. Not affiliated with Mojang.</div>
     </div>
   </div>
 
-  <div id="fps">FPS: --</div>
+  <!-- ============ HOW TO PLAY ============ -->
+  <div id="howto-screen" class="modal-screen hidden">
+    <div class="modal-box">
+      <h2>How To Play</h2>
+      <ul>
+        <li><b>WASD</b> — move &nbsp; <b>Mouse</b> — look</li>
+        <li><b>Space</b> — jump (Creative: double-tap to toggle flight, then Space/Shift = up/down)</li>
+        <li><b>Left Click</b> — break block &nbsp; <b>Right Click</b> — place block / use</li>
+        <li><b>1-9</b> or <b>Scroll</b> — select hotbar slot</li>
+        <li><b>E</b> — open Creative block picker (Creative) or Crafting menu (Survival)</li>
+        <li><b>F</b> — eat selected food (Survival)</li>
+        <li><b>Shift</b> — sprint / descend while flying</li>
+        <li><b>Esc</b> — release mouse / close menus</li>
+      </ul>
+      <button class="mc-button" id="btn-howto-close">Back</button>
+    </div>
+  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="world.js"></script>
-  <script src="script.js"></script>
+  <!-- ============ GAME CANVAS ============ -->
+  <canvas id="game-canvas" class="hidden"></canvas>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" class="hidden">
+    <div id="crosshair">+</div>
+
+    <div id="top-left-info">
+      <div id="mode-label"></div>
+      <div id="fps-label"></div>
+    </div>
+
+    <div id="vitals">
+      <div id="hearts" class="bar-row"></div>
+      <div id="hunger" class="bar-row"></div>
+    </div>
+
+    <div id="breaking-bar-wrap" class="hidden">
+      <div id="breaking-bar"><div id="breaking-bar-fill"></div></div>
+    </div>
+
+    <div id="hotbar"></div>
+
+    <div id="pickup-toast" class="hidden"></div>
+  </div>
+
+  <!-- ============ PAUSE / CLICK-TO-PLAY ============ -->
+  <div id="pause-screen" class="modal-screen hidden">
+    <div class="modal-box">
+      <h2>Paused</h2>
+      <p>Click anywhere to resume looking around.</p>
+      <button class="mc-button" id="btn-resume">Resume</button>
+      <button class="mc-button" id="btn-quit">Quit to Title</button>
+    </div>
+  </div>
+
+  <!-- ============ CREATIVE BLOCK PICKER ============ -->
+  <div id="creative-inv" class="inv-screen hidden">
+    <div class="inv-box">
+      <h2>Select Blocks &amp; Items <span class="inv-hint">(click to put in selected hotbar slot)</span></h2>
+      <div id="creative-grid" class="item-grid"></div>
+      <div id="creative-hotbar-row" class="hotbar-preview"></div>
+      <div class="inv-footer">Press <b>E</b> or <b>Esc</b> to close</div>
+    </div>
+  </div>
+
+  <!-- ============ SURVIVAL CRAFTING MENU ============ -->
+  <div id="craft-inv" class="inv-screen hidden">
+    <div class="inv-box">
+      <h2>Crafting &amp; Inventory</h2>
+
+      <div class="craft-columns">
+        <div class="craft-col">
+          <h3>Inventory</h3>
+          <div id="inv-storage-grid" class="item-grid small"></div>
+        </div>
+        <div class="craft-col">
+          <h3>Crafting</h3>
+          <div id="craft-recipe-list"></div>
+        </div>
+        <div class="craft-col">
+          <h3>Smelting <span class="inv-hint">(ore + coal)</span></h3>
+          <div id="smelt-recipe-list"></div>
+        </div>
+      </div>
+      <div id="craft-hotbar-row" class="hotbar-preview"></div>
+      <div class="inv-footer">Press <b>E</b> or <b>Esc</b> to close</div>
+    </div>
+  </div>
+
+  <div id="loading-screen">
+    <div class="loading-box">
+      <div class="logo-main" style="font-size:22px;">BLOCKCRAFT</div>
+      <div id="loading-text">Generating world…</div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+  <script src="js/noise.js"></script>
+  <script src="js/blocks.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>
